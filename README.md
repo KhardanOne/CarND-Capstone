@@ -140,11 +140,12 @@ Considering the current position of the car (/current_pose) the node should send
 	sub3 = rospy.Subscriber('/vehicle/traffic_lights', TrafficLightArray, self.traffic_cb)
 
 	self.upcoming_red_light_pub = rospy.Publisher('/traffic_waypoint', Int32, queue_size=1)
-```	
-The Traffic Ligth Detection node use LightDetector class. This class was implemented in python and uses many techniques that we learned about image manipulation and shape detection.
+```
+
+The Traffic Ligth Detection node uses the  LightDetector class. This class was implemented in python and uses many techniques that we learned about image manipulation and shape detection.
 To study the proper behavior of the class, we created an ipynb project file that you can find here: "TrafficDocs/Traffic_Light_Classifier.ipynb"
 
-The project uses image blurring (image Smoothing) to make circle detection easier.
+The project uses image blurring (image smoothing) to make circle detection easier.
 [Read more about Blurring here](https://opencv-python-tutroals.readthedocs.io/en/latest/py_tutorials/py_imgproc/py_filtering/py_filtering.html)
 
 Original image:
@@ -155,18 +156,26 @@ Blurred green light image:
 
 ![Blurred Green Light](TrafficDocs/blurredGreen.png)
 
-After blurring the circle detection in Hough image space is more effective.
+After blurring, the circle detection in Hough image space is more effective.
 [Read more about HoughCircles here](https://docs.opencv.org/master/da/d53/tutorial_py_houghcircles.html)
 
 ![Green found](TrafficDocs/referenceGreen.jpg)
 
-The next step after we found the circles on the image to select the green,red,and yellow colored ones.
-HoughCircles function provided by opencv is giving back also the coordinates of the circle middle position so we can get the pixel or pixels around it. The pixel colour identification is tuned by hand.
-There are three functions in LightDetector class to decide the color is red,green or yellow, the parameter of them is a pixel from the image.
-drawCirclesAndGetImages function has made for cropping out the detected circle of the image and collect them into one list with the classified color.
+The next step after we found the circles on the image is to select the green, red and yellow colored ones.
+The HoughCircles() function provided by opencv gives back also the coordinates of the middle position of the circle so we can get the pixel or pixels around it. The pixel colour identification is tuned manually.
+There are three functions in LightDetector class to decide if the color is red, green or yellow, the parameter of them is a pixel from the image.
+The drawCirclesAndGetImages() function was made for cropping out the detected circle of the image and collect them into one list with the classified color.
 This function has been simplified in the node because image generation is not required for classification.
-After all the getLightColor decides what color we return from that image. If we seen a red, we returning red always. If we seen a green we keep looking if there is a red or an orange on the picture because we always care about reds. If we seen an orange we keep looking as same as in the green case.
+After these step, the getLightColor() function decides what color we return from that image. If we can see red, we return red always. If we can see green, we keep looking if there is a red or an orange on the picture because we always care about reds. If we can see an orange, we keep looking, same way as in the case of the green.
 
 ![Found,cropped and classified](TrafficDocs/referenceAll.jpg)
 
-More information and example codes can be found at "TrafficDocs/Traffic_Light_Classifier.ipynb" project.
+More information and example codes can be found in the "TrafficDocs/Traffic_Light_Classifier.ipynb" project.
+
+### Sample vidoes
+
+Some videos about how the car approaches the traffic lights:
+
+* At the beginning of the simulation, first traffic light: sim_video_at_start.avi
+* At some random traffic light: sim_video_stop_at_red_1.avi
+* One more example for a red signal: sim_video_stop_at_red_2.avi
