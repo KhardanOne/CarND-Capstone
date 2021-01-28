@@ -148,15 +148,15 @@ The project uses image blurring (image Smoothing) to make circle detection easie
 [Read more about Blurring here](https://opencv-python-tutroals.readthedocs.io/en/latest/py_tutorials/py_imgproc/py_filtering/py_filtering.html)
 
 Original image:
-![Original Green Light](trafficgreen.jpeg)
+![Original Green Light](Traffic Docs/trafficgreen.jpeg)
 
 Blurred green light image:
-![Blurred Green Light](blurredGreen.png)
+![Blurred Green Light](Traffic Docs/blurredGreen.png)
 
 After blurring the circle detection in Hough image space is more effective.
 [Read more about HoughCircles here](https://docs.opencv.org/master/da/d53/tutorial_py_houghcircles.html)
 
-![Green found](referenceGreen.jpg)
+![Green found](Traffic Docs/referenceGreen.jpg)
 
 The next step after we found the circles on the image to select the green,red,and yellow colored ones.
 HoughCircles function provided by opencv is giving back also the coordinates of the circle middle position so we can get the pixel or pixels around it. The pixel colour identification is tuned by hand.
@@ -165,6 +165,6 @@ drawCirclesAndGetImages function has made for cropping out the detected circle o
 This function has been simplified in the node because image generation is not required for classification.
 After all the getLightColor decides what color we return from that image. If we seen a red, we returning red always. If we seen a green we keep looking if there is a red or an orange on the picture because we always care about reds. If we seen an orange we keep looking as same as in the green case.
 
-![Found,cropped and classified](reference all.jpg)
+![Found,cropped and classified](Traffic Docs/reference all.jpg)
 
 More information and example codes can be found at "Traffic Docs/Traffic_Light_Classifier.ipynb" project.
